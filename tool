@@ -13,7 +13,7 @@ case "$CMD" in
 
   weather)
     CITY_NAME="$1"
-    [ -z "$CITY_NAME" ] && CITY_NAME="千葉"
+    [ -z "$CITY_NAME" ] && CITY_NAME="東京"
 
     # XMLから都市ID取得
     CITY_ID=$(curl -s 'https://weather.tsukumijima.net/primary_area.xml' \
@@ -35,16 +35,27 @@ case "$CMD" in
     echo "🌤 $DISTRICT / $CITY の今日の天気: $WEATHER"
     ;;
 
-  fx)
-    PAIR="$1"
-    [ -z "$PAIR" ] && PAIR="USDJPY"
+forex)
+    BASE="$1"
+    TARGET="$2"
 
-    BASE=$(echo $PAIR | cut -c1-3)
-    SYMBOL=$(echo $PAIR | cut -c4-6)
+    if [ -z "$BASE" ] || [ -z "$TARGET" ]; then
+        echo "Usage: tool forex <BASE> <TARGET>"
+        echo "Example: tool forex USD JPY"
+        exit 1
+    fi
 
-    curl -s "https://api.exchangerate.host/latest?base=$BASE&symbols=$SYMBOL" \
-      | jq -r ".rates.$SYMBOL"
+    RATE=$(curl -s "https://api.exchangerate.host/latest?base=${BASE}&symbols=${TARGET}" \
+        | jq -r ".rates.${TARGET}")
+
+    if [ "$RATE" = "null" ] || [ -z "$RATE" ]; then
+        echo "Error: Could not fetch exchange rate for ${BASE} -> ${TARGET}"
+        exit 1
+    fi
+
+    echo "1 ${BASE} = ${RATE} ${TARGET}"
     ;;
+
 
   setup)
     BIN="$HOME/bin"

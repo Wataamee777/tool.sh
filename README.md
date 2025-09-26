@@ -32,7 +32,7 @@ tool <command> [options]
 
 | コマンド                 | 説明                            |
 | -------------------- | ----------------------------- |
-| `tool forex`         | 為替レート (USD → JPY) を取得         |
+| `tool forex <USD> <JPY> [1]`| 為替レートを取得 USD以外にも対応 |
 | `tool weather <地域名>` | 天気予報を取得（例: `tool weather 千葉`） |
 | `tool today`         | 今日が何の日かを取得                    |
 | `tool help`          | コマンド一覧を表示                     |

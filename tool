@@ -86,8 +86,11 @@ setup)
     echo "Commands:"
     echo "  today [MMDD]     - 今日または指定日付の記念日を表示"
     echo "  weather <都市名> - 今日の天気を district + city 表示"
-    echo "  fx <通貨ペア>    - 為替表示（例: USDJPY, EURJPY）"
+    echo "  forex <通貨ペア> <1>   - 為替表示（例: USDJPY, EURJPY）"
     echo "  setup            - ~/bin に追加して PATH に登録"
     echo "  help             - このヘルプを表示"
+    ;;
+    
+    echo "Unknown command: $CMD"
     ;;
 esac

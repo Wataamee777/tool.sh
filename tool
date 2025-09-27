@@ -57,19 +57,28 @@ forex)
     ;;
 
 
-  setup)
-    BIN="$HOME/bin"
-    mkdir -p "$BIN"
-    cp "$0" "$BIN/tool"
-    chmod +x "$BIN/tool"
+setup)
+    echo "[*] Setting up tool..."
 
-    if ! grep -q 'export PATH="$HOME/bin:$PATH"' "$HOME/.bashrc"; then
-      echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
-      echo "✅ PATH に $HOME/bin を追加しました。"
+    # apt があるか確認
+    if command -v apt >/dev/null 2>&1; then
+        echo "[*] Installing dependencies via apt..."
+        apt update -y
+        apt install -y curl jq
+    else
+        echo "[!] apt not found. Please install curl and jq manually."
     fi
 
-    echo "✅ tool を $BIN にインストールしました。"
-    echo "ターミナル再起動するか 'source ~/.bashrc' を実行してください。"
+    mkdir -p "$HOME/bin"
+    cp "$0" "$HOME/bin/tool"
+    chmod +x "$HOME/bin/tool"
+
+    if ! echo "$PATH" | grep -q "$HOME/bin"; then
+        echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
+        echo "[*] Added ~/bin to PATH. Run: source ~/.bashrc"
+    fi
+
+    echo "[*] Setup complete! Try: tool help"
     ;;
 
   help|*)
